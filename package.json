@@ -1,0 +1,22 @@
+{
+  "name": "aws-ecs-task-runner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node dist/index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nathan Birkes <nbirkes@gmail>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^10.5.1",
+    "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.266.1"
+  }
+}

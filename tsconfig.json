@@ -1,0 +1,26 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+
+    "lib": [ "es2016" ],
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "preserveConstEnums": true,
+    "target": "ES5",
+    "pretty": true,
+    "sourceMap": true,
+    "rootDir": "./lib",
+    "outDir": "./dist",
+    "declarationDir": "./dist"
+  },
+  "include": [
+    "./lib/**/*"
+  ]
+}
+
