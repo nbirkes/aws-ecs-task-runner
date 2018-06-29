@@ -10,7 +10,7 @@
     "start": "node dist/index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Nathan Birkes <nbirkes@gmail>",
+  "author": "Nathan Birkes <nbirkes@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^10.5.1",
