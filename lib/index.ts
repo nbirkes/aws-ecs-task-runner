@@ -3,7 +3,11 @@ import { parseArgs, printUsage } from "./argv";
 
 const ecs = new ECS();
 
-(async () => {
+main().catch(error => {
+  console.error(error);
+});
+
+async function main(): Promise<void> {
   const argv = parseArgs();
 
   if (argv.help) {
@@ -18,10 +22,10 @@ const ecs = new ECS();
 
   let instance = await findInstance(argv.cluster);
   let taskDefinition = await findTaskDefinition(argv.task);
-  let tasks = await startTask(argv.cluster, argv.task, instance, taskDefinition);
+  let tasks = await startTask(argv.cluster, argv.task, instance, taskDefinition, ["node", "dist/index", "--ci", "login-client"]);
 
   await monitorTask(argv.cluster, getTaskArn(tasks));
-})();
+}
 
 async function findInstance(cluster: string): Promise<string> {
   let resp = await ecs.listContainerInstances({
@@ -50,7 +54,10 @@ async function findTaskDefinition(taskDefName: string): Promise<string> {
 
 function getTaskArn(resp: ECS.Types.StartTaskResponse): string {
   if (!resp.tasks) throw new Error('tasks is undefined');
-  if (!resp.tasks[0]) throw new Error('tasks[0] is undefined');
+  if (!resp.tasks[0]) {
+    console.log(JSON.stringify(resp, null, 2));
+    throw new Error('tasks[0] is undefined');
+  }
 
   let task = resp.tasks[0];
   if (!task.taskArn) throw new Error('taskArn is undefined');
@@ -76,9 +83,9 @@ async function startTask(cluster: string, task: string, instance: string, taskDe
 
 async function monitorTask(cluster: string, taskArn: string): Promise<void> {
   let stopped = false;
-
+  let resp;
   while (!stopped) {
-    let resp = await ecs.describeTasks({
+    resp = await ecs.describeTasks({
       cluster,
       tasks: [taskArn],
     }).promise();
@@ -90,4 +97,5 @@ async function monitorTask(cluster: string, taskArn: string): Promise<void> {
     console.log('Last status', task.lastStatus, new Date());
     stopped = task.lastStatus === 'STOPPED';
   }
+  console.log(JSON.stringify(resp, null, 2));
 }
